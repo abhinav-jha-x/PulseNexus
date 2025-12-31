@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseNexus - Premium Event Management</title>
+    <style>
+        :root {
+            --primary: #e94057;
+            --secondary: #f27121;
+            --dark: #121212;
+            --light: #f8f8f8;
+            --accent: #8a2387;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), #1e1e1e);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            transition: all 0.3s;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: url('assets/event3.jpg') center/cover no-repeat;
+            position: relative;
+        }
+        
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(18,18,18,0.7), rgba(18,18,18,0.9));
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+        
+        .hero-content h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(233, 64, 87, 0.4);
+        }
+        
+        section {
+            padding: 6rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            background: rgba(233,64,87,0.1);
+        }
+        
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 0;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            height: 350px;
+            cursor: pointer;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.15);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.4s;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+        
+       .estimator-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.05);
+    border-radius: 30px;
+    padding: 3rem;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group small {
+    margin-top: 0.5rem;
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+#estimatorForm label {
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--light);
+}
+
+#estimatorForm select,
+#estimatorForm input {
+    padding: 1rem;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+#estimatorForm select:focus,
+#estimatorForm input:focus {
+    outline: none;
+    background: rgba(233,64,87,0.2);
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+#result-container {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(233,64,87,0.1);
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid var(--primary);
+}
+
+#result {
+    font-size: 2.8rem;
+    font-weight: bold;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+#breakdown {
+    line-height: 2;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .estimator-card {
+        padding: 2rem;
+        margin: 0 1rem;
+    }
+    
+    #result {
+        font-size: 2.2rem;
+    }
+}
+        
+        footer {
+            text-align: center;
+            padding: 3rem;
+            background: #0a0a0a;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 80%;
+                background: var(--dark);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.4s;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">PulseNexus</div>
+            <div class="nav-links" id="navLinks">
+                <a href="#hero">Home</a>
+                <a href="#services">Services</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#estimator">Estimate</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="mobile-menu" id="mobileMenu">☰</div>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h1>PulseNexus Events</h1>
+            <p>Transforming Visions into Unforgettable Experiences</p>
+            <a href="#estimator" class="cta-btn">Get Instant Quote</a>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2>Our Premium Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-music"></i></div>
+                <h3>DJ & Sound Systems</h3>
+                <p>Professional DJs with state-of-the-art sound equipment for perfect audio experience</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3>Lighting Design</h3>
+                <p>Custom lighting setups to create the perfect ambiance for your event</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-theater-masks"></i></div>
+                <h3>Stage Setup</h3>
+                <p>Professional stage design and construction for performances and speeches</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-concierge-bell"></i></div>
+                <h3>Hospitality</h3>
+                <p>Complete guest management and hospitality services</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-utensils"></i></div>
+                <h3>Catering</h3>
+                <p>Gourmet catering with diverse menu options for all tastes</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-campground"></i></div>
+                <h3>Tents & Venues</h3>
+                <p>Luxurious tent setups and venue arrangements</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-palette"></i></div>
+                <h3>Decoration</h3>
+                <p>Theme-based decoration to match your vision perfectly</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-hotel"></i></div>
+                <h3>Hotel Bookings</h3>
+                <p>Premium hotel accommodations for guests</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-car"></i></div>
+                <h3>Transportation</h3>
+                <p>Luxury cars and transportation logistics</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-user-secret"></i></div>
+                <h3>Security (Shadows)</h3>
+                <p>Professional security services for complete safety</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-ellipsis-h"></i></div>
+                <h3>And Much More</h3>
+                <p>Photography, Videography, Entertainment, and customized solutions</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <h2>Event Gallery</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="assets/event1.jpg" alt="Corporate Event">
+                <div class="gallery-overlay">
+                    <h3>Corporate Gala</h3>
+                    <p>Elegant setup for 500+ guests</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="assets/event3.jpg" alt="Wedding">
+                <div class="gallery-overlay">
+                    <h3>Dream Wedding</h3>
+                    <p>Luxurious outdoor ceremony</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="assets/event13.jpg" alt="Concert">
+                <div class="gallery-overlay">
+                    <h3>Live Concert</h3>
+                    <p>Energetic stage and lighting</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="assets/event11.webp" alt="Party">
+                <div class="gallery-overlay">
+                    <h3>Birthday Bash</h3>
+                    <p>Vibrant theme party</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="assets/event12.jpg" alt="Conference">
+                <div class="gallery-overlay">
+                    <h3>Conference</h3>
+                    <p>Professional setup</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="assets/event10.jpg" alt="Festival">
+                <div class="gallery-overlay">
+                    <h3>Festival</h3>
+                    <p>Large-scale event management</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="estimator">
+    <h2>Smart Event Cost Estimator</h2>
+    <div class="estimator-card">
+        <form id="estimatorForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Event Type</label>
+                    <select id="type">
+                        <option value="corporate">Corporate Event</option>
+                        <option value="wedding">Wedding</option>
+                        <option value="concert">Concert / Live Show</option>
+                        <option value="birthday">Birthday / Private Party</option>
+                        <option value="other">Other Celebration</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Number of Guests</label>
+                    <input type="number" id="guests" min="50" placeholder="e.g. 300" value="300">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Venue Type</label>
+                    <select id="venue">
+                        <option value="1">Indoor Hall</option>
+                        <option value="1.3">Outdoor Lawn / Garden</option>
+                        <option value="1.6">Beach / Destination Venue</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Decoration Level</label>
+                    <select id="decor">
+                        <option value="1">Basic (Elegant & Simple)</option>
+                        <option value="1.5">Premium (Themed & Detailed)</option>
+                        <option value="2.2">Luxury (Extravagant Floral & Custom)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Catering (per guest)</label>
+                    <select id="catering">
+                        <option value="600">Standard - ₹600/guest</option>
+                        <option value="1000">Premium - ₹1000/guest</option>
+                        <option value="1800">Luxury - ₹1800/guest</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Sound & Lighting</label>
+                    <select id="sound">
+                        <option value="20000">Basic Setup - ₹20,000</option>
+                        <option value="50000">Professional - ₹50,000</option>
+                        <option value="100000">Concert Grade - ₹1,00,000</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Artist / Entertainment</label>
+                    <select id="artist">
+                        <option value="0">None</option>
+                        <option value="30000">Professional DJ + Anchor - ₹30,000</option>
+                        <option value="80000">Live Band / Performers - ₹80,000</option>
+                        <option value="150000">Celebrity Artist Appearance - ₹1,50,000+</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Hospitality Team (Optional)</label>
+                    <input type="number" id="hospitality" min="0" placeholder="0" value="0">
+                    <small>₹2,500 per team member</small>
+                </div>
+            </div>
+
+            <button type="button" class="estimate-btn" onclick="estimate()">Calculate Total Cost</button>
+        </form>
+
+        <div id="result-container" style="display:none;">
+            <h3 id="result"></h3>
+            <div id="breakdown"></div>
+            <p style="margin-top:20px; font-style:italic; opacity:0.8;">
+                💡 This is an instant estimate. Final quote depends on specific requirements, date, and location.
+            </p>
+        </div>
+    </div>
+</section>
+
+    <footer id="contact">
+        <h2>Contact PulseNexus</h2>
+        <p>Let's create magic together. Reach out for your dream event!</p>
+        <p>Email: pulsenexus911@gmail.com | Phone: +91-7903918330</p>
+        <p>&copy; 2025 PulseNexus. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenu').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+</script>
+<script>
+  function estimate() {
+    // Get values
+    const guests = parseInt(document.getElementById('guests').value) || 300;
+    const venueMultiplier = parseFloat(document.getElementById('venue').value);
+    const decorMultiplier = parseFloat(document.getElementById('decor').value);
+    const cateringPerGuest = parseFloat(document.getElementById('catering').value);
+    const soundLight = parseFloat(document.getElementById('sound').value);
+    const artist = parseFloat(document.getElementById('artist').value);
+    const hospitalityCount = parseInt(document.getElementById('hospitality').value) || 0;
+
+    // Base costs
+    const baseManagement = 50000; // PulseNexus coordination fee
+    const hospitalityCost = hospitalityCount * 2500;
+
+    // Calculations
+    const cateringTotal = cateringPerGuest * guests;
+    const venueDecorFactor = venueMultiplier * decorMultiplier;
+    const subtotal = baseManagement + cateringTotal + soundLight + artist + hospitalityCost;
+    const total = Math.round(subtotal * venueDecorFactor);
+
+    // Format currency
+    const formatter = new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    });
+
+    // Display result
+    document.getElementById('result').innerHTML = `Estimated Cost: ${formatter.format(total)}`;
+    
+    // Breakdown
+    document.getElementById('breakdown').innerHTML = `
+        <strong>Cost Breakdown:</strong><br>
+        • Base Management & Coordination: ${formatter.format(baseManagement)}<br>
+        • Catering (${cateringPerGuest}/guest × ${guests}): ${formatter.format(cateringTotal)}<br>
+        • Sound & Lighting: ${formatter.format(soundLight)}<br>
+        • Artist / Entertainment: ${formatter.format(artist)}<br>
+        • Hospitality Team (${hospitalityCount} × ₹2,500): ${formatter.format(hospitalityCost)}<br>
+        • Venue + Decoration Multiplier (${venueMultiplier} × ${decorMultiplier}): Applied<br>
+        <strong>Total Estimated Budget: ${formatter.format(total)}</strong>
+    `;
+
+    document.getElementById('result-container').style.display = 'block';
+    document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
